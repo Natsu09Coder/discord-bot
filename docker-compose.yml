@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  app:
+    build: ./server
+    environment:
+      - NODE_PORT=9090
+      - BOT_TOKEN
+    expose:
+      - 9090
