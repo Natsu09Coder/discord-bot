@@ -2,7 +2,7 @@
 
 ## First-time deployment on a server or local
 
-The admin access code in the site is stored in a `.env` file that does not exist by default. Instead, the repository contains a `.env.sample` file that needs to be copied, renamed and edited to set the code expected on this specific environment.
+The bot token to get access to Discord is stored in a `.env` file that does not exist by default. Instead, the repository contains a `.env.sample` file that needs to be copied, renamed and edited to set the code expected on this specific environment.
 
 ## Running the code locally in dev mode
 
@@ -37,3 +37,9 @@ Make it executable and it will be run by git everytime you push to this remote. 
 
     chmod +x .git/hooks/post-receive
     git config receive.denyCurrentBranch ignore
+
+## References
+
+- <https://www.freecodecamp.org/news/create-a-discord-bot-with-javascript-nodejs/>
+- <https://www.sitepoint.com/discord-bot-node-js/>
+- <https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js>
