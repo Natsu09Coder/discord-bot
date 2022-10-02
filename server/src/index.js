@@ -1,65 +1,38 @@
-import Discord, { MessageEmbed } from "discord.js";
+import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import * as commands from './commands.js';
 
 const {
 	BOT_TOKEN
 } = process.env;
 
-const client = new Discord.Client();
-const prefix = "/";
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.on("message", function (message) {
-	if (message.author.bot) return;
-	if (!message.content.startsWith(prefix)) return;
+client.commands = new Collection();
+Object.values(commands).forEach(cmd => {
+	client.commands.set(cmd.data.name, cmd);
+});
 
-	const commandBody = message.content.slice(prefix.length);
-	const args = commandBody.split(' ');
-	const command = args.shift().toLowerCase();
+client.once(Events.ClientReady, c => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
+});
 
-	if (command === "welcome") {
-		message.delete();
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+	console.log(interaction);
 
-		const exampleWelcome = new Discord.MessageEmbed()
-			.setColor('FFFFFF')
-			.setTitle('Welcome !!')
-			.setDescription('Bienvenue sur le serveur !\n Amusez-vous sur ce serveur.\n ATTENTION: Le Bot est en cours de developpement\n si il y a un problème contacter un admin.')
-			.setThumbnail('https://img.icons8.com/nolan/452/discord-new-logo.png');
-		message.channel.send(exampleWelcome);
-	}
-	
-	if (command === "embed") {
-		message.delete();
-		let color = '#FFA500';
-		if (args[0].startsWith('#')) {
-			color = args.shift();
-		}
-		const exampleEmbed = new Discord.MessageEmbed()
-			.setColor(color)
-			.setTitle(args.shift())
-			.setDescription(args.join(' '));
-		message.channel.send(exampleEmbed);
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
 	}
 
-	if (command === "ping") {
-		message.delete();
-		const timeTaken = Date.now() - message.createdTimestamp;
-		message.reply(`This message had a latency of ${timeTaken}ms.`);
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-
-	if (command === "say") {
-		message.delete();
-		message.channel.send(args.join(' '));
-	}
-
-	if (command === "clear") {
-		message.delete();
-		if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(`Tu n'as pas la permission...`);
-		if (!args[0]) return message.channel.send("Tu dois spécifier un nombre de messages à supprimer !");
-		message.channel.bulkDelete(args[0]).then(() => {
-			message.channel.send(`À ton service! (${args[0]}) `).then(msg => msg.delete(5000));
-
-		})
-	}
-}
-);
+});
 
 client.login(BOT_TOKEN);

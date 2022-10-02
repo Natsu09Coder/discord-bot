@@ -40,6 +40,8 @@ Make it executable and it will be run by git everytime you push to this remote. 
 
 ## References
 
+- <https://discordjs.guide/>
+- <https://discord.js.org/#/docs/discord.js/v13/general/welcome>
 - <https://www.freecodecamp.org/news/create-a-discord-bot-with-javascript-nodejs/>
 - <https://www.sitepoint.com/discord-bot-node-js/>
 - <https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js>
