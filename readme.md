@@ -8,8 +8,8 @@ The bot token to get access to Discord is stored in a `.env` file that does not 
 
 In dev mode, the local code will be mapped inside the containers, so you can edit and debug locally:
 
-    docker-compose up -d --build
-    docker-compose down
+    docker compose up -d --build
+    docker compose down
 
 Once the containers are started, the site can be accessed through:
 
@@ -19,11 +19,11 @@ Additionally, you can see the logs of the containers or shell into them directly
 
 ## Site Update
 
-Once the updated site has been pushed on the git repository, simply fetch the update and hard reset the local branch. Then use docker-compose to refressh the running containers:
+Once the updated site has been pushed on the git repository, simply fetch the update and hard reset the local branch. Then use docker compose to refresh the running containers:
 
     git fetch --all
     git reset --hard origin/master
-    docker-compose up -d --build
+    docker compose up -d --build
 
 This can be automated throug a `post-receive` file in the destination server git repository, inside `.git/hooks`. Put the following contents in it:
 
@@ -31,7 +31,7 @@ This can be automated throug a `post-receive` file in the destination server git
     cd ..
     GIT_DIR='.git'
     umask 002 && git reset --hard
-    umask 002 && cd no-game && docker-compose -f docker-compose.yml up -d --build
+    umask 002 && cd no-game && docker compose -f docker-compose.yml up -d --build
 
 Make it executable and it will be run by git everytime you push to this remote. Also, set git config to allow resetting the current branch on receive:
 
