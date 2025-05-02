@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Arthur Fidanza <arthur.fidanza@gmail.com>",
   "dependencies": {
-    "discord.js": "14.17.3",
+    "discord.js": "14.19.3",
     "express": "4.21.2"
   },
   "devDependencies": {
